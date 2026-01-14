@@ -3,8 +3,7 @@ import type {
   INodeExecutionData,
   INodeType,
   INodeTypeDescription,
-  IHttpRequestMethods,
-  IRequestOptions,
+  IHttpRequestOptions,
   IDataObject,
 } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
@@ -341,14 +340,14 @@ export class OkraPdf implements INodeType {
 
           const endpoint = operation === 'extractSync' ? '/api/v1/extract/sync' : '/api/v1/extract';
 
-          const requestOptions: IRequestOptions = {
-            method: 'POST' as IHttpRequestMethods,
-            uri: `${baseUrl}${endpoint}`,
+          const requestOptions: IHttpRequestOptions = {
+            method: 'POST',
+            url: `${baseUrl}${endpoint}`,
             body,
             json: true,
           };
 
-          responseData = await this.helpers.requestWithAuthentication.call(
+          responseData = await this.helpers.httpRequestWithAuthentication.call(
             this,
             'okraPdfApi',
             requestOptions,
@@ -360,13 +359,13 @@ export class OkraPdf implements INodeType {
           if (operation === 'getStatus') {
             const jobId = this.getNodeParameter('jobId', i) as string;
 
-            const requestOptions: IRequestOptions = {
-              method: 'GET' as IHttpRequestMethods,
-              uri: `${baseUrl}/api/v1/jobs/${jobId}`,
+            const requestOptions: IHttpRequestOptions = {
+              method: 'GET',
+              url: `${baseUrl}/api/v1/jobs/${jobId}`,
               json: true,
             };
 
-            responseData = await this.helpers.requestWithAuthentication.call(
+            responseData = await this.helpers.httpRequestWithAuthentication.call(
               this,
               'okraPdfApi',
               requestOptions,
@@ -388,14 +387,14 @@ export class OkraPdf implements INodeType {
               qs.pages = resultsOptions.pages;
             }
 
-            const requestOptions: IRequestOptions = {
-              method: 'GET' as IHttpRequestMethods,
-              uri: `${baseUrl}/api/v1/jobs/${jobId}/results`,
+            const requestOptions: IHttpRequestOptions = {
+              method: 'GET',
+              url: `${baseUrl}/api/v1/jobs/${jobId}/results`,
               qs,
               json: true,
             };
 
-            responseData = await this.helpers.requestWithAuthentication.call(
+            responseData = await this.helpers.httpRequestWithAuthentication.call(
               this,
               'okraPdfApi',
               requestOptions,
@@ -416,14 +415,14 @@ export class OkraPdf implements INodeType {
               qs.limit = listOptions.limit;
             }
 
-            const requestOptions: IRequestOptions = {
-              method: 'GET' as IHttpRequestMethods,
-              uri: `${baseUrl}/api/v1/jobs`,
+            const requestOptions: IHttpRequestOptions = {
+              method: 'GET',
+              url: `${baseUrl}/api/v1/jobs`,
               qs,
               json: true,
             };
 
-            responseData = await this.helpers.requestWithAuthentication.call(
+            responseData = await this.helpers.httpRequestWithAuthentication.call(
               this,
               'okraPdfApi',
               requestOptions,
