@@ -1,6 +1,6 @@
 {
   "name": "@okrapdf/n8n-nodes-okrapdf",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "n8n nodes to extract tables and text from PDFs using OkraPDF",
   "keywords": [
     "n8n-community-node-package",
