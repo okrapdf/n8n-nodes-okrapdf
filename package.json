@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/steventsao/n8n-nodes-okrapdf.git"
+    "url": "git+https://github.com/okrapdf/n8n-nodes-okrapdf.git"
   },
   "main": "index.js",
   "scripts": {

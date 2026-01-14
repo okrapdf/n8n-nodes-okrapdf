@@ -8,13 +8,13 @@ Extract tables and text from PDFs using [OkraPDF](https://okrapdf.com).
 
 1. Go to **Settings > Community Nodes**
 2. Select **Install**
-3. Enter `n8n-nodes-okrapdf` and confirm
+3. Enter `@okrapdf/n8n-nodes-okrapdf` and confirm
 
 ### Manual Installation
 
 ```bash
 cd ~/.n8n/nodes
-pnpm install n8n-nodes-okrapdf
+pnpm install @okrapdf/n8n-nodes-okrapdf
 ```
 
 ## Credentials
@@ -57,7 +57,7 @@ You need an OkraPDF API key:
 ## Support
 
 - Documentation: [okrapdf.com/docs](https://okrapdf.com/docs)
-- Issues: [GitHub Issues](https://github.com/steventsao/n8n-nodes-okrapdf/issues)
+- Issues: [GitHub Issues](https://github.com/okrapdf/n8n-nodes-okrapdf/issues)
 
 ## License
 
