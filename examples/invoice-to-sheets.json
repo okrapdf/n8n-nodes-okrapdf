@@ -1,0 +1,89 @@
+{
+  "name": "Invoice PDF → Google Sheets",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "invoice-upload",
+        "responseMode": "responseNode"
+      },
+      "id": "webhook",
+      "name": "Receive Invoice",
+      "type": "n8n-nodes-base.webhook",
+      "position": [250, 300],
+      "webhookId": "invoice-upload"
+    },
+    {
+      "parameters": {
+        "resource": "document",
+        "operation": "extractSync",
+        "inputType": "url",
+        "pdfUrl": "={{ $json.body.pdf_url }}",
+        "options": {}
+      },
+      "id": "okrapdf",
+      "name": "Extract Tables",
+      "type": "@okrapdf/n8n-nodes-okrapdf.okraPdf",
+      "position": [450, 300],
+      "credentials": {
+        "okraPdfApi": {
+          "id": "1",
+          "name": "OkraPDF API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const tables = $input.first().json.tables || [];\nconst rows = [];\n\nfor (const table of tables) {\n  for (const row of table.rows || []) {\n    rows.push({ json: { page: table.page, data: row } });\n  }\n}\n\nreturn rows.length ? rows : [{ json: { error: 'No tables found' } }];"
+      },
+      "id": "flatten",
+      "name": "Flatten Rows",
+      "type": "n8n-nodes-base.code",
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": { "__rl": true, "mode": "list", "value": "YOUR_SHEET_ID" },
+        "sheetName": { "__rl": true, "mode": "list", "value": "Sheet1" },
+        "columns": {
+          "mappingMode": "autoMapInputData"
+        }
+      },
+      "id": "sheets",
+      "name": "Append to Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [850, 300],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "2",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ success: true, rows: $items.length }) }}"
+      },
+      "id": "respond",
+      "name": "Respond OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "position": [1050, 300]
+    }
+  ],
+  "connections": {
+    "Receive Invoice": {
+      "main": [[{ "node": "Extract Tables", "type": "main", "index": 0 }]]
+    },
+    "Extract Tables": {
+      "main": [[{ "node": "Flatten Rows", "type": "main", "index": 0 }]]
+    },
+    "Flatten Rows": {
+      "main": [[{ "node": "Append to Sheet", "type": "main", "index": 0 }]]
+    },
+    "Append to Sheet": {
+      "main": [[{ "node": "Respond OK", "type": "main", "index": 0 }]]
+    }
+  }
+}
