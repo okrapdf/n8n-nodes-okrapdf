@@ -12,7 +12,7 @@ export class OkraPdf implements INodeType {
   description: INodeTypeDescription = {
     displayName: 'OkraPDF',
     name: 'okraPdf',
-    icon: 'file:okrapdf.svg',
+    icon: 'file:okrapdf.png',
     group: ['transform'],
     version: 1,
     subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
